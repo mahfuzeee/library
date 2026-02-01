@@ -12,14 +12,14 @@
         <button id="add-book-btn">Add New Book</button>
     </header>
     <dialog id="modal">
-        <form action="submit">
+        <form id="add-book-form" action="submit">
             <div class="text-input-section">
                 <label for="title">Title:</label>
-                <input class="form-input" id="title" type="text" required>
+                <input class="form-input" id="title" type="text" placeholder="Enter Title." required>
                 <label for="author">Author:</label>
-                <input class="form-input" id="author" type="text" required>
+                <input class="form-input" id="author" type="text" placeholder="Enter Author Name." required>
                 <label for="pages">Pages:</label>
-                <input class="form-input" id="pages" type="number" required>
+                <input class="form-input" id="pages" type="number" placeholder="Enter no. of pages." required>
             </div>
             <div class="read-status-section">
                 <label for="read-status">Do you read this book?</label>

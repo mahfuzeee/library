@@ -1,20 +1,29 @@
 let booksLibrary = []; //Main Array
 
+//Adding some books
+addBookToLibrary("The Hobbit", "J.R.R. Tolkein", 295, false);
+addBookToLibrary("Control Systems", "S.P. Xavier", 358, true);
+
 //DOM interface variables
 const cardContainer = document.getElementById("book-container");
 const modal = document.getElementById("modal");
 const addBookBtn = document.getElementById("add-book-btn");
 const dialogCancelBtn = document.getElementById("cancel-button");
 const submitBtn = document.getElementById("submit-button");
+const addBookForm = document.getElementById("add-book-form");
 
 
 //Function for creating and displaying card data.
 function updateCard() {
-    const cardDiv = document.createElement("div");
-    cardDiv.id = booksLibrary[0].id;
-    cardDiv.classList.add("card");
-    cardContainer.appendChild(cardDiv);
-    cardDiv.innerHTML = booksLibrary[0].info();
+    cardContainer.replaceChildren();
+    booksLibrary.forEach((book) => {
+        const cardDiv = document.createElement("div");
+        cardDiv.id = book.id;
+        cardDiv.classList.add("card");
+        cardContainer.appendChild(cardDiv);
+        cardDiv.innerHTML = book.info();
+    });
+    
 }
 
 //Function for add Book form popup
@@ -71,13 +80,13 @@ submitBtn.addEventListener('click', (event) => {
     if(title && author && page) {
         addBookToLibrary(title, author, page, readStatus);
         modal.close();
+        addBookForm.reset();
         updateCard();
     }
     
 });
 
 
-addBookToLibrary("The Hobbit", "J.R.R. Tolkein", 295, false);
-addBookToLibrary("Control Systems", "S.P. Xavier", 358, true);
+
 //console.log(booksLibrary);
 updateCard();
