@@ -1,1 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/style.css">
+    <title>Library</title>
+</head>
+<body>
+    <header>
+        <h1>Book Library</h1>
+        <button id="add-book-btn">Add New Book</button>
+    </header>
+    <dialog id="modal">
+        <form action="submit">
+            <div class="text-input-section">
+                <label for="title">Title:</label>
+                <input class="form-input" id="title" type="text" required>
+                <label for="author">Author:</label>
+                <input class="form-input" id="author" type="text" required>
+                <label for="pages">Pages:</label>
+                <input class="form-input" id="pages" type="number" required>
+            </div>
+            <div class="read-status-section">
+                <label for="read-status">Do you read this book?</label>
+                <input type="checkbox" name="status" id="read-status" >
+            </div>
+            <div class="action-section">
+                <button id="submit-button" class="form-button" type="submit" style="background-color: green;">Add Book</button>
+                <button id="cancel-button" class="form-button" type="button" style="background-color: red;">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+    <main>
+        
+        <div id="book-container">
+            <div class="card">AL Quran</div>
+        </div>
+    </main>
 
+    <script src="./src/libraryJS.js"></script>
+</body>
+</html>
