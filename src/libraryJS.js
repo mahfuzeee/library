@@ -1,8 +1,11 @@
+
 let booksLibrary = []; //Main Array
 
 //Adding some books
 addBookToLibrary("The Hobbit", "J.R.R. Tolkein", 295, false);
 addBookToLibrary("Control Systems", "S.P. Xavier", 358, true);
+addBookToLibrary("Pride and Prejudice", "Jane Austen", 458, true);
+addBookToLibrary("1984", "George Orwell", 347, false);
 
 //DOM interface variables
 const cardContainer = document.getElementById("book-container");
@@ -13,25 +16,25 @@ const submitBtn = document.getElementById("submit-button");
 const addBookForm = document.getElementById("add-book-form");
 
 
+
 //Function for creating and displaying card data.
 function updateCard() {
     cardContainer.replaceChildren();
-    booksLibrary.forEach((book) => {
-        const cardDiv = document.createElement("div");
-        cardDiv.id = book.id;
-        cardDiv.classList.add("card");
-        cardContainer.appendChild(cardDiv);
-        cardDiv.innerHTML = book.info();
-    });
+    const htmlContent = booksLibrary.map(book => 
+        `<div data-book-id=${book.id} class="card">
+            ${book.info()}
+            <div class="card-actions">
+                <button data-action="toggle-status">Change Read Status</button>
+                <button data-action="delete">Delete</button>
+          </div>
+        </div>`
+    ).join('');
+    cardContainer.innerHTML = htmlContent;
     
 }
 
-//Function for add Book form popup
-function addBook() {
-    
-}
 
-
+//Defining Book Object Constructor.
 function Book(id, title, author, pages, read) {
     if(!new.target) {
     throw Error("You nust use 'new' operator to call constructor.");
@@ -48,13 +51,18 @@ function Book(id, title, author, pages, read) {
         } else {
         readText = "not read yet";
         }
-        return `Title: ${this.title} <br> Author: ${this.author} <br>Pages: ${this.pages}<br> Read Status: ${readText}.`;
+        return `<h2>${this.title} </h2> 
+                <p>By <em>${this.author}</em> </p> 
+                <p>${this.pages} Pages</p> 
+                <p>Read Status: ${readText}</p>`;
     }
 }
 
-//const theHobbit = new Book("The Hobbit", "J.R.R. Tolkein", 295, false);
+Book.prototype.toggleStatus = function() {
+    this.read = !this.read;
+}
 
-//const controlSystem = new Book("Control Systems", "S.P. Xavier", 358, true);
+//Adding book to library array
 
 function addBookToLibrary(title, author, pages, readStus) {
     let bookId = crypto.randomUUID();
@@ -63,14 +71,34 @@ function addBookToLibrary(title, author, pages, readStus) {
     //console.log(bookId);
 }
 
+//Event handling section
+
+function toggleReadStatus(id) {
+    const bookIndex = booksLibrary.findIndex(book => book.id === id);
+    if(bookIndex !== -1) {
+        booksLibrary[bookIndex].toggleStatus();
+    }
+}
+
+function deleteBook(id) {
+    const bookIndex = booksLibrary.findIndex(book => book.id === id);
+    if(bookIndex !== -1) {
+        booksLibrary.splice(bookIndex, 1);
+    }
+}
+
 addBookBtn.addEventListener('click', () => {
     modal.showModal();
 });
 
 dialogCancelBtn.addEventListener('click', () => {
+    addBookForm.reset();
     modal.close();
+    
 });
 
+
+//Handling Add book to library.
 submitBtn.addEventListener('click', (event) => {
     event.preventDefault();
     const title = document.getElementById("title").value;
@@ -86,7 +114,25 @@ submitBtn.addEventListener('click', (event) => {
     
 });
 
+//Handling book card buttons
+cardContainer.addEventListener('click', (e) => {
+    if (!e.target.matches('button[data-action]')) return;
+
+    const card = e.target.closest('.card');
+    const bookId = card.dataset.bookId;
+    const action = e.target.dataset.action;
+    
+    if(!card) return;
+    console.log(action);
+    
+    if(action === 'toggle-status') {
+        toggleReadStatus(bookId);
+    } else if(action === 'delete') {
+        deleteBook(bookId);
+    }
+    updateCard();
+});
 
 
-//console.log(booksLibrary);
+//Initial Loading
 updateCard();
